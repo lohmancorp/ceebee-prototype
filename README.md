@@ -15,7 +15,7 @@ Ensure you have the following installed:
 ## **2. Clone the Repository**
 If your code is in a repository, clone it using:
 ```bash
-git clone <your-repository-url>
+git clone https://github.com/lohmancorp/ceebee-prototype
 cd <your-repository-folder>
 ```
 If the code is in a local directory, navigate to it:
