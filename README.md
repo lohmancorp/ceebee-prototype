@@ -38,11 +38,14 @@ venv\Scripts\activate    # On Windows
 ## **4. Install Dependencies**
 Run the following command to install required Python packages:
 ```bash
+pip install --upgrade pip
+```
+```bash
 pip install -r requirements.txt
 ```
 If `requirements.txt` does not exist, install the packages manually:
 ```bash
-pip install flask flask-cors openai spacy requests
+pip install flask flask-cors openai thinc spacy requests
 ```
 Additionally, download the **spaCy English model** required for entity extraction:
 ```bash
