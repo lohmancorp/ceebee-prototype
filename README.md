@@ -114,6 +114,11 @@ Or specify a different port:
 ```bash
 python app.py --port 8000
 ```
+*Optional*
+Start servering http for the web-front end 
+```bash
+python -m http.server 8080
+```
 
 ---
 
