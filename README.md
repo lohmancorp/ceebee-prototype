@@ -55,17 +55,23 @@ python -m spacy download en_core_web_sm
 Create a `config.json` file in the project root directory with the following structure:
 ```json
 {
-  "api_keys": {
-    "openai": "your-openai-api-key",
-    "freshservice": "your-freshservice-api-key"
-  },
-  "urls": {
-    "freshservice_base": "https://yourcompany.freshservice.com/api/v2"
-  },
-  "user_profile": {
-    "fs_user_id": "your-user-id",
-    "person_email": "your-email@example.com"
-  }
+    "api_keys": {
+        "openai": "YOUR_OPEN_AI_API_KEY",
+        "freshservice": "YOUR_FRESH_SERVICE_OR_TICKETING_SYTEM_KEY"
+    },
+    "urls": {
+        "freshservice_base": "https://your-sandbox.freshservice.com/api/v2/"
+    },
+    "user_profile": {
+        "person_name": "Jane Doe",
+        "person_email": "jane.doe@domain.com",
+        "fs_user_id": 123456789,
+        "fs_company_id": 98765431
+    },
+    "aps_info": {
+        "aps_token": "YOUR_APS_TOKEN",
+        "aps_endpoint": "https://yourbrand.domain.com/aps/2/"
+    }
 }
 ```
 Alternatively, you can set environment variables in your terminal:
