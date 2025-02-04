@@ -6,7 +6,7 @@ This guide provides step-by-step instructions on how to install, set up, and run
 
 ## **1. Prerequisites**
 Ensure you have the following installed:
-- **Python 3.8+**
+- **Python 3.8+ to 3.11**
 - **pip** (Python package manager)
 - **Virtual Environment** (optional but recommended)
 
