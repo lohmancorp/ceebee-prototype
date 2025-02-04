@@ -42,7 +42,7 @@ pip install -r requirements.txt
 ```
 If `requirements.txt` does not exist, install the packages manually:
 ```bash
-pip install flask flask-cors openai spacy requests sqlite3
+pip install flask flask-cors openai spacy requests
 ```
 Additionally, download the **spaCy English model** required for entity extraction:
 ```bash
