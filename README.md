@@ -150,56 +150,7 @@ docker run -p 5000:5000 my-flask-app
 
 ---
 
-## **10. Running as a Systemd Service (Optional, Linux Only)**
-For production environments, you may want to run this as a systemd service.
-
-Create a systemd service file:
-```bash
-sudo nano /etc/systemd/system/my-flask-app.service
-```
-
-Add the following content:
-```ini
-[Unit]
-Description=Flask Application
-After=network.target
-
-[Service]
-User=your-user
-WorkingDirectory=/path/to/your/project
-ExecStart=/path/to/your/project/venv/bin/python app.py
-Restart=always
-
-[Install]
-WantedBy=multi-user.target
-```
-
-Reload systemd and enable the service:
-```bash
-sudo systemctl daemon-reload
-sudo systemctl enable my-flask-app
-sudo systemctl start my-flask-app
-```
-Check status:
-```bash
-sudo systemctl status my-flask-app
-```
-
----
-
-## **11. Logging and Debugging**
-- To view logs while running:
-  ```bash
-  tail -f flask.log
-  ```
-- To check for errors in systemd:
-  ```bash
-  journalctl -u my-flask-app --no-pager
-  ```
-
----
-
-## **12. Troubleshooting**
+## **10. Troubleshooting**
 ### Issue: `ModuleNotFoundError`
 If you get an error about missing modules, ensure dependencies are installed:
 ```bash
@@ -212,21 +163,4 @@ rm -rf conversations.db
 python -c "from workflow import initialize_database; initialize_database()"
 ```
 
----
-
-## **13. Future Improvements**
-- Add automated tests.
-- Enhance API security.
-- Optimize database structure for scalability.
-- Implement caching for better performance.
-
----
-
-## **14. Contributing**
-Feel free to submit pull requests or open issues for enhancements.
-
----
-
-## **15. License**
-This project is licensed under the MIT License.
 
