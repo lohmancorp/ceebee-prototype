@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>CeeBee - Your Virtual Assistant</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+        body {
+            margin-top: 20px;
+        }
+        
+        .chat-online {
+            color: #34ce57
+        }
+        
+        .chat-offline {
+            color: #e4606d
+        }
+        
+        .chat-messages {
+            display: flex;
+            flex-direction: column;
+            max-height: 800px;
+            overflow-y: scroll
+        }
+        
+        .chat-message-left,
+        .chat-message-right {
+            display: flex;
+            flex-shrink: 0
+        }
+        
+        .chat-message-left {
+            margin-right: auto
+        }
+        
+        .chat-message-right {
+            flex-direction: row-reverse;
+            margin-left: auto
+        }
+        
+        .py-3 {
+            padding-top: 1rem!important;
+            padding-bottom: 1rem!important;
+        }
+        
+        .px-4 {
+            padding-right: 1.5rem!important;
+            padding-left: 1.5rem!important;
+        }
+        
+        .flex-grow-0 {
+            flex-grow: 0!important;
+        }
+        
+        .border-top {
+            border-top: 1px solid #dee2e6!important;
+        }
+        /* Table Styling */
+        
+        table {
+            border-collapse: collapse;
+            /* Ensures borders do not double up */
+            width: 100%;
+            /* Optional: Makes the table fill its container */
+            margin: 15px 0;
+            /* Adds a 7px margin on top and bottom */
+            border: 1px solid #555;
+            /* Dark grey border for the entire table */
+        }
+        
+        th,
+        td {
+            border: 1px solid #555;
+            /* Dark grey border for cells */
+            padding: 8px;
+            /* Optional: Adds padding inside cells */
+            text-align: left;
+            /* Aligns text to the left */
+        }
+        
+        th {
+            background-color: #f2f2f2;
+            /* Optional: Light background for headers */
+            font-weight: bold;
+            /* Makes header text bold */
+        }
+    </style>
+</head>
+
+<body>
+    <main class="content">
+        <div class="container p-0">
+
+            <img src="https://www.cloudblue.com/wp-content/uploads/elementor/thumbs/image_2023-09-07_205147001-qpk32b5tsfeki4dem4o6q8l0e00zbxhcbg6lcorccy.png" style="padding-bottom: 1%;">
+
+            <div class="card">
+                <div class="row g-0">
+                    <div class="col-12 col-lg-12 col-xl-12">
+                        <div class="py-2 px-4 border-bottom d-none d-lg-block">
+                            <div class="d-flex align-items-center py-1">
+                                <div class="position-relative">
+                                    <img src="static/ceebee.png" class="rounded-circle mr-1" alt="Cee Bee" width="40" height="40">
+                                </div>
+                                <div class="flex-grow-1 pl-3">
+                                    <strong>CeeBee</strong>
+                                    <div class="text-muted small"><em><span class="typing-dots"></span></em></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="position-relative">
+                            <div id="chatbox" class="chat-messages p-4" style="min-height: 720px; max-height: 720px;">
+
+
+                            </div>
+                        </div>
+
+                        <div class="flex-grow-0 py-3 px-4 border-top">
+                            <div class="input-group">
+                                <!-- <input type="textarea" class="form-control" placeholder="Type your message"> -->
+                                <textarea class="form-control" placeholder="Type your message" style="margin-right: 20px;"></textarea>
+                                <button class="btn btn-primary" onclick="sendMessage()">Send</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
+    <script type="text/javascript">
+        let conversationId = null;
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const chatbox = document.getElementById("chatbox");
+            chatbox.innerHTML = `
+                <div class="bot-message chat-message-left pb-4">
+                    <div>
+                        <img src="static/ceebee.png" class="rounded-circle mr-1" alt="CeeBee" width="40" height="40">
+                        <div class="text-muted small text-nowrap mt-2">${new Date().toLocaleTimeString()}</div>
+                    </div>
+                    <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
+                        <div class="font-weight-bold mb-1">CeeBee</div>
+                        Hi Taylor! How can I help you today?
+                    </div>
+                </div>
+            `;
+
+            // Add Enter key event listener for sending messages
+            const inputBox = document.querySelector("textarea");
+            inputBox.addEventListener("keypress", function(event) {
+                if (event.key === "Enter" && !event.shiftKey) {
+                    event.preventDefault();
+                    sendMessage();
+                }
+            });
+        });
+
+        async function sendMessage() {
+            const inputBox = document.querySelector("textarea");
+            const input = inputBox.value.trim();
+            const chatbox = document.getElementById("chatbox");
+            const sendButton = document.querySelector("button");
+
+            if (!input) return;
+
+            // Format user message with Markdown
+            const markdownIt = window.markdownit();
+            const formattedUserMessage = markdownIt.render(input);
+
+            // Display user message
+            chatbox.innerHTML += `
+                <div class="user-message chat-message-right pb-4">
+                    <div>
+                        <img src="static/taylor.jpg" class="rounded-circle mr-1" alt="Taylor Giddens" width="40" height="40">
+                        <div class="text-muted small text-nowrap mt-2">${new Date().toLocaleTimeString()}</div>
+                    </div>
+                    <div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
+                        <div class="font-weight-bold mb-1">You</div>
+                        ${formattedUserMessage}
+                    </div>
+                </div>
+            `;
+
+            // Add typing placeholder for CeeBee's response
+            const typingPlaceholder = document.createElement("div");
+            typingPlaceholder.className = "bot-message chat-message-left pb-4";
+            typingPlaceholder.id = "typingPlaceholder";
+            typingPlaceholder.innerHTML = `
+                <div>
+                    <img src="static/ceebee.png" class="rounded-circle mr-1" alt="Cee Bee" width="40" height="40">
+                    <div class="text-muted small text-nowrap mt-2"><em>${new Date().toLocaleTimeString()}</em></div>
+                </div>
+                <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
+                    <div class="font-weight-bold mb-1">Cee Bee</div>
+                    <span class="typing-dots">Typing.</span>
+                </div>
+            `;
+            chatbox.appendChild(typingPlaceholder);
+
+            // Animate typing dots
+            const typingDots = typingPlaceholder.querySelector(".typing-dots");
+            const typingInterval = setInterval(() => {
+                typingDots.textContent = typingDots.textContent === "Typing..." ? "Typing" : typingDots.textContent + ".";
+            }, 500);
+
+            chatbox.scrollTop = chatbox.scrollHeight;
+
+            // Disable the send button
+            sendButton.disabled = true;
+            inputBox.value = "";
+
+            try {
+                // Build the payload
+                const payload = {
+                    prompt: input,
+                };
+                if (conversationId) {
+                    payload.conversation_id = conversationId;
+                }
+
+                // Send request to your backend API
+                const response = await fetch("http://127.0.0.1:5000/api/conversation", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(payload),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                // Extract and format the bot's reply
+                const botReply = data.reply || "Sorry, I couldn't understand that. Please try again.";
+                const formattedReply = markdownIt.render(botReply);
+
+                // Update the conversation ID or clear it if next_step is "complete"
+                if (data.next_step === "complete") {
+                    conversationId = null;
+                } else if (data.conversation_id) {
+                    conversationId = data.conversation_id;
+                }
+
+                // Remove the typing placeholder and display the bot's response
+                clearInterval(typingInterval);
+                typingPlaceholder.remove();
+                chatbox.innerHTML += `
+                    <div class="bot-message chat-message-left pb-4">
+                        <div>
+                            <img src="static/ceebee.png" class="rounded-circle mr-1" alt="Cee Bee" width="40" height="40">
+                            <div class="text-muted small text-nowrap mt-2">${new Date().toLocaleTimeString()}</div>
+                        </div>
+                        <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
+                            <div class="font-weight-bold mb-1">Cee Bee</div>
+                            ${formattedReply}
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
+                console.error("Error:", error);
+
+                // Remove the typing placeholder and display an error message
+                clearInterval(typingInterval);
+                typingPlaceholder.remove();
+                chatbox.innerHTML += `
+                    <div class="bot-message chat-message-left pb-4">
+                        <div>
+                            <img src="static/ceebee.png" class="rounded-circle mr-1" alt="Cee Bee" width="40" height="40">
+                            <div class="text-muted small text-nowrap mt-2">${new Date().toLocaleTimeString()}</div>
+                        </div>
+                        <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
+                            <div class="font-weight-bold mb-1">Cee Bee</div>
+                            An error occurred. Please try again later.
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Re-enable the send button
+            sendButton.disabled = false;
+
+            // Clear input box and scroll chatbox to bottom
+            chatbox.scrollTop = chatbox.scrollHeight;
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,19 @@
+{
+    "api_keys": {
+        "openai": "YOUR_OPEN_AI_KEY",
+        "freshservice": "YOUR_FRESHSERVICE_KEYE"
+    },
+    "urls": {
+        "freshservice_base": "https://your-sandbox.freshservice.com/api/v2/"
+    },
+    "user_profile": {
+        "person_name": "Your Name",
+        "person_email": "your.name@email.com",
+        "fs_user_id": 123456789,
+        "fs_company_id": 987654321
+    },
+    "aps_info": {
+        "aps_token": "YOUR_APS_TOKEN_OR_BETTER_YET_SETUP_OAUTH",
+        "aps_endpoint": "https://your.commerce.brand.com/aps/2/"
+    }
+}
